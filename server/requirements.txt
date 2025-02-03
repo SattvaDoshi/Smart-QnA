@@ -1,0 +1,8 @@
+Flask==2.3.2
+flask-cors==4.0.0
+python-dotenv==1.0.0
+PyPDF2==3.0.1
+spacy==3.5.2
+scikit-learn==1.2.2
+transformers==4.30.2
+torch==2.0.1
