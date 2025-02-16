@@ -60,6 +60,7 @@ const MainForm = () => {
   };
 
   return (
+    <>
     <div
       className={`min-h-screen flex flex-col items-center justify-center p-10 transition-all ${
         darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
@@ -188,6 +189,8 @@ const MainForm = () => {
       {/* Render results if available */}
       {/* {results && <Question data={results} />} */}
     </div>
+    
+  </>
   );
 };
 
