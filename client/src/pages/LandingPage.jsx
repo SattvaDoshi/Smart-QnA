@@ -8,7 +8,7 @@ function LandingPage() {
      
 
       {/* Hero Section */}
-      <section className="text-center py-28 bg-blue-100 mt-16">
+      <section className="text-center py-28 bg-blue-100 border-amber-700">
         <h2 className="text-4xl font-bold text-blue-800">Say Goodbye to Manual Question Making!</h2>
         <p className="text-lg text-gray-700 mt-4">Save hundreds of hours by automating your question generation process.</p>
       </section>

@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { FiSun, FiMoon } from "react-icons/fi";
+import { useContext } from "react";
+import { toast } from "react-toastify";
 
 
 const SignUp = () => {
@@ -11,12 +13,14 @@ const SignUp = () => {
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
 
+    const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+  
+
   const submitHandler=async(e)=>{
     e.preventDefault();
     console.log(username,email,password);
     const {data}=await axios.post("https://qgauth.onrender.com/users/signup",{username,email,password},{
       withCredentials:true,
-      
     });
     console.log(data);    
   }
@@ -52,7 +56,7 @@ const SignUp = () => {
       </div>
 
       {/* Sign Up Box */}
-      <div className="relative z-10 p-8 rounded-lg shadow-lg w-96 text-center bg-white dark:bg-gray-800 transition-all">
+      <div className="relative -mt-20 z-10 p-8 rounded-lg shadow-lg w-96 text-center bg-white dark:bg-gray-800 transition-all">
         <h2 className="text-3xl font-bold text-blue-600 dark:text-blue-400">
           Create an Account
         </h2>

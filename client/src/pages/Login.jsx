@@ -41,14 +41,14 @@ function LoginPage() {
       </button>
 
       {/* Login Box */}
-      <div className={`w-full max-w-md p-8 rounded-lg shadow-lg transition-all ${
+      <div className={`-mt-20 w-full max-w-md p-8 rounded-lg shadow-lg transition-all ${
         darkMode ? "bg-gray-800" : "bg-white"
       }`}>
         <h2 className="text-3xl font-semibold text-center mb-6">
           Welcome Back
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 ">
           {/* Username */}
         
 
