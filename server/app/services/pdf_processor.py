@@ -1,12 +1,20 @@
 import PyPDF2
 
-def extract_text_from_pdf(pdf_path):
+def extract_text_from_pdf(pdf_file):
+    """
+    Extract text from a PDF file
+    
+    Args:
+        pdf_file: File object containing PDF data
+        
+    Returns:
+        str: Extracted text from the PDF
+    """
     try:
+        pdf_reader = PyPDF2.PdfReader(pdf_file)
         text = ""
-        with open(pdf_path, "rb") as file:
-            reader = PyPDF2.PdfReader(file)
-            for page in reader.pages:
-                text += page.extract_text() + "\n"
-        return text.strip() if text else "No text found in PDF."
+        for page in pdf_reader.pages:
+            text += page.extract_text()
+        return text
     except Exception as e:
-        return f"Error extracting text: {str(e)}"
+        raise Exception(f"Error processing PDF: {str(e)}")
