@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+.question-bg {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.1) 10%, transparent 10%);
+  background-size: 20px 20px;
+  position: relative;
+}
+
+.question-bg::after {
+  content: "??????";
+  font-size: 5rem;
+  color: rgba(255, 255, 255, 0.1);
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
