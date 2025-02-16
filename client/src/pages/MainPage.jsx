@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Sun, Moon, Upload, Loader2 } from "lucide-react";
-// import Question from "../Components/Question";
+import Question from "../Components/Question";
 import { api } from "../const";
 
 const MainForm = () => {
@@ -187,7 +187,7 @@ const MainForm = () => {
       </div>
 
       {/* Render results if available */}
-      {/* {results && <Question data={results} />} */}
+      {results && <Question data={results} />}
     </div>
     
   </>

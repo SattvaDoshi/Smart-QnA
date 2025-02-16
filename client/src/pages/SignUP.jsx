@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { useContext } from "react";
-import { toast } from "react-toastify";
 
 
 const SignUp = () => {
