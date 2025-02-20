@@ -12,9 +12,9 @@ const Question = ({ data }) => {
 
   return (
     <div className="w-full max-w-3xl mx-auto mt-6 space-y-4">
-      {data.map((q, index) => (
-        <div key={index} className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4 border">
-          <div className="flex justify-between items-center p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
+      {questions.map((q, index) => (
+        <div key={q.id} className="bg-white shadow-lg rounded-lg p-4 w-full border">
+          <div className="flex justify-between items-center p-3 bg-blue-100 rounded-lg">
             <div className="flex items-center gap-3">
               <input
                 type="checkbox"

@@ -29,8 +29,9 @@ const MainForm = () => {
     const selectedFiles = Array.from(e.target.files);
     setPdfs((prevPdfs) => [...prevPdfs, ...selectedFiles]);
   };
+  
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (pdfs.length === 0) {
       console.error("No PDF file selected");
@@ -68,45 +69,38 @@ const MainForm = () => {
     >
       <button
         onClick={() => setDarkMode(!darkMode)}
-        className="absolute top-6 right-6 p-3 bg-gray-700 dark:bg-gray-200 text-white dark:text-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all"
-        title="Toggle Dark Mode"
+        className="absolute top-6 right-6 p-3 bg-gray-700 dark:bg-gray-200 text-white dark:text-gray-800 rounded-full shadow-lg"
       >
-        {darkMode ? <Sun size={22} /> : <Moon size={22} />}
+        {darkMode ? <FiSun size={22} /> : <FiMoon size={22} />}
       </button>
 
       <div
-        className={`w-full max-w-2xl p-10 rounded-lg shadow-2xl transition-all ${
+        className={`w-full max-w-2xl p-10 rounded-lg shadow-lg transition-all ${
           darkMode ? "bg-gray-800" : "bg-white"
         }`}
       >
-        <h2 className="text-4xl font-bold text-center mb-8">
+        <h2 className="text-4xl font-semibold text-center mb-8">
           AI Question Generator
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* PDF Upload */}
           <div>
-            <label className="block font-semibold text-lg mb-2">
-              Upload PDFs
-            </label>
+            <label className="block font-medium text-lg">Upload PDFs</label>
             <div className="border border-gray-300 dark:border-gray-600 rounded-lg p-4 flex items-center space-x-4">
-              <Upload className="text-blue-500" size={24} />
+              <FiUpload className="text-blue-500" size={24} />
               <input
                 type="file"
                 name="pdfs"
                 multiple
                 onChange={handleFileChange}
-                className="w-full bg-transparent focus:outline-none"
+                className="w-full"
               />
             </div>
           </div>
 
-          {/* Topic & Bloom's Level */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-6">
             <div>
-              <label className="block font-semibold text-lg mb-2">
-                Topic
-              </label>
+              <label className="block font-medium text-lg">Topic</label>
               <input
                 type="text"
                 name="topic"
@@ -119,9 +113,7 @@ const MainForm = () => {
             </div>
 
             <div>
-              <label className="block font-semibold text-lg mb-2">
-                Bloom’s Level
-              </label>
+              <label className="block font-medium text-lg">Bloom’s Level</label>
               <select
                 name="blooms_level"
                 value={bloomsLevel}
@@ -138,12 +130,10 @@ const MainForm = () => {
             </div>
           </div>
 
-          {/* Marks & Number of Questions */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-6">
             <div>
-              <label className="block font-semibold text-lg mb-2">
-                Marks Per Question:{" "}
-                <span className="font-bold">{marksPerQuestion}</span>
+              <label className="block font-medium text-lg">
+                Marks Per Question: {marksPerQuestion}
               </label>
               <input
                 type="range"
@@ -157,9 +147,8 @@ const MainForm = () => {
             </div>
 
             <div>
-              <label className="block font-semibold text-lg mb-2">
-                Number of Questions:{" "}
-                <span className="font-bold">{numQuestions}</span>
+              <label className="block font-medium text-lg">
+                Number of Questions: {numQuestions}
               </label>
               <input
                 type="range"
@@ -175,19 +164,13 @@ const MainForm = () => {
 
           <button
             type="submit"
-            disabled={loading}
-            className={`w-full flex items-center justify-center space-x-3 py-3 rounded-lg font-semibold transition-all bg-blue-600 text-white hover:bg-blue-700 text-lg ${
-              loading ? "opacity-70 cursor-not-allowed" : ""
-            }`}
+            className="w-full py-3 rounded-lg font-semibold transition-all bg-blue-600 text-white hover:bg-blue-700 text-lg"
           >
-            {loading && <Loader2 className="animate-spin" size={20} />}
-            <span>{loading ? "Generating..." : "Generate"}</span>
+            Generate
           </button>
         </form>
       </div>
-
-      {/* Render results if available */}
-      {results && <Question data={results} />}
+    <Question/>
     </div>
     
   </>

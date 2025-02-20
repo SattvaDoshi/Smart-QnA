@@ -1,30 +1,47 @@
+/* eslint-disable no-unused-vars */
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { useContext } from "react";
+import { toast } from "react-toastify";
 
 
 const SignUp = () => {
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
-  });
-  const [username,setUsername]=useState("");
-  const [email,setEmail]=useState("");
-  const [password,setPassword]=useState("");
+  const navigate = useNavigate();
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem("theme") === "dark");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const { isAuthenticated, setIsAuthenticated } = useContext(Context);
-  
+  const { isAuthenticated, setIsAuthenticated,loading,setLoading } = useContext(Context);
 
-  const submitHandler=async(e)=>{
+  const submitHandler = async (e) => {
+    setLoading(true)
     e.preventDefault();
-    console.log(username,email,password);
-    const {data}=await axios.post("https://qgauth.onrender.com/users/signup",{username,email,password},{
-      withCredentials:true,
-    });
-    console.log(data);    
-  }
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3000/users/signup",
+        // "https://qgauth.onrender.com/users/signup",
+        { username, email, password },
+        { withCredentials: true }
+      );
+      console.log(data);
+      
+      toast.success("Registered successfully");
+      localStorage.setItem("isAuthenticated", "true");
+      setIsAuthenticated(true);
+      localStorage.setItem("isAuthenticated", "true");
 
-  
+      // Redirect to /main after successful registration
+      navigate("/dashboard");
+      setLoading(false)
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Something went wrong");
+      console.error(error);
+      setIsAuthenticated(false);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (darkMode) {
@@ -37,7 +54,7 @@ const SignUp = () => {
   }, [darkMode]);
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center transition-all bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white">
+    <div className="relative min-h-screen flex items-center justify-center transition-all bg-blue-100 text-gray-900 dark:bg-gray-900 dark:text-white">
       {/* Theme Toggle Button */}
       <button
         onClick={() => setDarkMode(!darkMode)}
@@ -65,30 +82,31 @@ const SignUp = () => {
 
         <form className="mt-6 space-y-4" onSubmit={submitHandler}>
           <input
-          type="text"
-             required
-             value={username}
-             onChange={(e)=>(setUsername(e.target.value))}
+            type="text"
+            required
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             placeholder="Full Name"
             className="w-full px-4 py-2 border rounded-md focus:ring-2 bg-gray-200 dark:bg-gray-700 dark:text-white focus:ring-blue-500"
           />
           <input
             type="email"
             required
-            onChange={(e)=>(setEmail(e.target.value))}
             value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             className="w-full px-4 py-2 border rounded-md focus:ring-2 bg-gray-200 dark:bg-gray-700 dark:text-white focus:ring-blue-500"
           />
           <input
-            required
-            onChange={(e)=>(setPassword(e.target.value))}
-            value={password}
             type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
             className="w-full px-4 py-2 border rounded-md focus:ring-2 bg-gray-200 dark:bg-gray-700 dark:text-white focus:ring-blue-500"
           />
           <button
+          disabled={loading}
             type="submit"
             className="w-full bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700 transition"
           >
