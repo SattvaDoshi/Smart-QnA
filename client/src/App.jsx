@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
-import SignUp from "./pages/SignUp";
+import SignUp from "./pages/SignUP";
 import Login from "./pages/Login";
 import MainPage from "./pages/MainPage";
 import Header from "./Components/Header";
@@ -16,33 +16,33 @@ import DashBoard from "./pages/DashBoard";
 function App() {
   const { setIsAuthenticated } = useContext(Context);
 
-  useEffect(() => {
-    const authStatus = localStorage.getItem("isAuthenticated");
-    if (authStatus === "true") {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
+  // useEffect(() => {
+  //   const authStatus = localStorage.getItem("isAuthenticated");
+  //   if (authStatus === "true") {
+  //     setIsAuthenticated(true);
+  //   } else {
+  //     setIsAuthenticated(false);
+  //   }
   
-    // Optionally, check with your backend to ensure session is valid
-    axios
-      .get("http://localhost:3000/users/me", { withCredentials: true })
-      .then((res) => {
-        console.log(res);
+  //   // Optionally, check with your backend to ensure session is valid
+  //   axios
+  //     .get("http://localhost:3000/users/me", { withCredentials: true })
+  //     .then((res) => {
+  //       console.log(res);
         
-        if (res.data.success) {
-          setIsAuthenticated(true);
-          localStorage.setItem("isAuthenticated", "true"); // Store authentication state in localStorage
-        } else {
-          setIsAuthenticated(false);
-          localStorage.removeItem("isAuthenticated"); // Clear auth status if not valid
-        }
-      })
-      .catch(() => {
-        setIsAuthenticated(false);
-        localStorage.removeItem("isAuthenticated"); // Clear auth status if error occurs
-      });
-  }, []);
+  //       if (res.data.success) {
+  //         setIsAuthenticated(true);
+  //         localStorage.setItem("isAuthenticated", "true"); // Store authentication state in localStorage
+  //       } else {
+  //         setIsAuthenticated(false);
+  //         localStorage.removeItem("isAuthenticated"); // Clear auth status if not valid
+  //       }
+  //     })
+  //     .catch(() => {
+  //       setIsAuthenticated(false);
+  //       localStorage.removeItem("isAuthenticated"); // Clear auth status if error occurs
+  //     });
+  // }, []);
   
 
 
@@ -54,7 +54,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
-        <Route path="dashboard/main" element={<MainPage />} />
+        <Route path="/dashboard/main" element={<MainPage />} />
         <Route path="/dashboard" element={<DashBoard/>} />
 
       </Routes>

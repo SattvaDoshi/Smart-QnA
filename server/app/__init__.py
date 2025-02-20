@@ -7,7 +7,7 @@ def create_app():
     app.config.from_object(Config)
     
     # Enable CORS with credentials support for the specified origin.
-    CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
+    CORS(app, supports_credentials=True, origins=["http://localhost:5174"])
     
     from app.routes import api
     app.register_blueprint(api, url_prefix='/api/v1')
