@@ -42,7 +42,7 @@ const MainForm = () => {
   const [numQuestions, setNumQuestions] = useState(5);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [selectedQuestionId, setSelectedQuestionId] = useState(null);
   const [savedQuestions, setSavedQuestions] = useState([]);
 
   useEffect(() => {
@@ -94,6 +94,10 @@ const MainForm = () => {
     doc.save("Saved_Questions.pdf");
   };
 
+  const toggleQuestion = (id) => {
+    setSelectedQuestionId((prev) => (prev === id ? null : id));
+  };
+
   return (
     <div
       className={`min-h-screen p-10 transition-all ${
@@ -108,7 +112,7 @@ const MainForm = () => {
       </button>
 
       <div className="max-w-4xl mx-auto space-y-10">
-        {/* Original Styled Form */}
+        {/* Form */}
         <form
           onSubmit={handleSubmit}
           className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 space-y-6"
@@ -182,38 +186,36 @@ const MainForm = () => {
           </button>
         </form>
 
-        {/* Section 2: Show Dummy Questions */}
+        {/* Generated Questions */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
           <h2 className="text-2xl mb-4 font-bold">Generated Questions</h2>
           {results.map((q) => (
-            <div
-              key={q.id}
-              className="p-3 border-b hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-              onClick={() => setSelectedQuestion(q)}
-            >
-              {q.question}
+            <div key={q.id}>
+              <div
+                className="p-3 border-b hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                onClick={() => toggleQuestion(q.id)}
+              >
+                {q.question}
+              </div>
+              {selectedQuestionId === q.id && (
+                <div className="px-6 py-3 text-sm space-y-2 bg-gray-50 dark:bg-gray-700 rounded-b">
+                  <p><strong>Bloom’s Level:</strong> {q.bloomsLevel}</p>
+                  <p><strong>LLM Answer:</strong> {q.llmAnswer}</p>
+                  <p><strong>Doc Answer:</strong> {q.docAnswer}</p>
+                  <p><strong>Similarity Score:</strong> {q.similarityScore}</p>
+                  <button
+                    onClick={() => handleSave(q)}
+                    className="mt-2 px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm"
+                  >
+                    Save Question
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>
 
-        {/* Section 2: Show Details of Clicked Question */}
-        {selectedQuestion && (
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md space-y-2">
-            <h3 className="text-xl font-bold">{selectedQuestion.question}</h3>
-            <p><strong>Bloom’s Level:</strong> {selectedQuestion.bloomsLevel}</p>
-            <p><strong>LLM Answer:</strong> {selectedQuestion.llmAnswer}</p>
-            <p><strong>Doc Answer:</strong> {selectedQuestion.docAnswer}</p>
-            <p><strong>Similarity Score:</strong> {selectedQuestion.similarityScore}</p>
-            <button
-              onClick={() => handleSave(selectedQuestion)}
-              className="mt-3 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-            >
-              Save Question
-            </button>
-          </div>
-        )}
-
-        {/* Section 3: Saved Questions + Export PDF */}
+        {/* Saved Questions */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-2xl font-bold">Saved Questions</h3>
@@ -228,12 +230,21 @@ const MainForm = () => {
             <p>No questions saved yet.</p>
           ) : (
             savedQuestions.map((q) => (
-              <div
-                key={q.id}
-                className="p-3 border-b hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                onClick={() => setSelectedQuestion(q)}
-              >
-                {q.question}
+              <div key={q.id}>
+                <div
+                  className="p-3 border-b hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  onClick={() => toggleQuestion(q.id)}
+                >
+                  {q.question}
+                </div>
+                {selectedQuestionId === q.id && (
+                  <div className="px-6 py-3 text-sm space-y-2 bg-gray-50 dark:bg-gray-700 rounded-b">
+                    <p><strong>Bloom’s Level:</strong> {q.bloomsLevel}</p>
+                    <p><strong>LLM Answer:</strong> {q.llmAnswer}</p>
+                    <p><strong>Doc Answer:</strong> {q.docAnswer}</p>
+                    <p><strong>Similarity Score:</strong> {q.similarityScore}</p>
+                  </div>
+                )}
               </div>
             ))
           )}
