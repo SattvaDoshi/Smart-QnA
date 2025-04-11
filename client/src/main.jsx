@@ -1,33 +1,17 @@
-import { StrictMode, useState } from 'react';
-import { createRoot } from 'react-dom/client';
-import './index.css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
-import { createContext } from 'react';
+import './index.css';
+import { ClerkProvider } from '@clerk/clerk-react';
 
-// Provide all default values to avoid errors
-export const Context = createContext({
-  isAuthenticated: false,
-  setIsAuthenticated: () => {},
-  loading: false,
-  setLoading: () => {},
-  user: {},
-  setUser: () => {},
-});
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
-const AppWrapper = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState({});
+console.log(PUBLISHABLE_KEY);
 
-  return (
-    <Context.Provider value={{ isAuthenticated, setIsAuthenticated, loading, setLoading, user, setUser }}>
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
       <App />
-    </Context.Provider>
-  );
-};
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <AppWrapper />
-  </StrictMode>
+    </ClerkProvider>
+  </React.StrictMode>
 );

@@ -74,7 +74,7 @@ const MainForm = () => {
       >
         <button
           onClick={() => setDarkMode(!darkMode)}
-          className="absolute top-6 right-6 p-3 bg-gray-700 dark:bg-gray-200 text-white dark:text-gray-800 rounded-full shadow-lg"
+          className="absolute top-32 right-6 p-3 bg-gray-700 dark:bg-gray-200 text-white dark:text-gray-800 rounded-full shadow-lg"
         >
           {darkMode ? <FiSun size={22} /> : <FiMoon size={22} />}
         </button>

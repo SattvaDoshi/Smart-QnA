@@ -1,6 +1,5 @@
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Context } from "../main";
+import { useUser } from "@clerk/clerk-react";
 import { FaDatabase, FaMagic } from "react-icons/fa";
 
 const dashboardFeatures = [
@@ -19,20 +18,17 @@ const dashboardFeatures = [
 ];
 
 function DashBoard() {
-  const { isAuthenticated } = useContext(Context);
   const navigate = useNavigate();
+  const { isSignedIn } = useUser(); // Clerk authentication state
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white text-gray-900 flex flex-col items-center">
-      {/* <h2 className="text-4xl font-extrabold text-blue-800 mt-10">Dashboard</h2> */}
-
-      {/* Dashboard Cards */}
       <section className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8 p-6 mt-8">
         {dashboardFeatures.map((feature, index) => (
           <div
             key={index}
             className="p-6 bg-white shadow-lg rounded-xl hover:shadow-2xl transition-all cursor-pointer border border-blue-300 hover:border-blue-500 flex flex-col items-center text-center"
-            onClick={() => (isAuthenticated ? navigate(feature.route) : navigate("/login"))}
+            onClick={() => (isSignedIn ? navigate(feature.route) : navigate("/sign-in"))}
           >
             <feature.icon className="text-5xl text-blue-600 mb-4" />
             <h3 className="text-2xl font-semibold text-blue-700">{feature.title}</h3>

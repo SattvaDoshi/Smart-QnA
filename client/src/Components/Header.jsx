@@ -1,116 +1,109 @@
 import { useNavigate } from "react-router-dom";
-import { useContext, useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { FiMenu } from "react-icons/fi";
-import { Context } from "../main";
-import axios from "axios";
-import { toast } from "react-toastify";
-// import { FaBook } from "react-icons/fa";  // Importing a book icon from react-icons
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  useUser,
+  useAuth,
+} from "@clerk/clerk-react";
+import { FiSun, FiMoon } from "react-icons/fi";
+import { useEffect } from "react";
+
 
 const Header = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, setIsAuthenticated, loading, setLoading } = useContext(Context);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [username, setUsername] = useState("");
+const [darkMode, setDarkMode] = useState(
+  localStorage.getItem("theme") === "dark"
+);
+useEffect(() => {
+  if (darkMode) {
+    document.documentElement.classList.add("dark");
+    localStorage.setItem("theme", "dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+    localStorage.setItem("theme", "light");
+  }
+}, [darkMode]);
 
-  // Fetch user details if authenticated
-  const fetchUserDetails = useCallback(async () => {
-    try {
-      const { data } = await axios.get("http://localhost:3000/users/me", { withCredentials: true });
-      setUsername(data?.user?.username || "User");
-    } catch (error) {
-      toast.error("Failed to fetch user details");
-      console.error("User fetch error:", error);
-    }
-  }, []);
+console.log(darkMode);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetchUserDetails();
-    }
-  }, [isAuthenticated, fetchUserDetails]);
 
-  const handleLogout = async () => {
-    try {
-      setLoading(true);
-      await axios.post("http://localhost:3000/users/logout", {}, { withCredentials: true });
-      setIsAuthenticated(false);
-      localStorage.removeItem("isAuthenticated");
-      toast.success("Logged out successfully");
-      navigate("/");
-    } catch (error) {
-      toast.error("Logout failed");
-      console.error("Logout error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+
+  const { user } = useUser();
+  const { signOut } = useAuth();
 
   return (
     <header className="flex justify-between items-center px-8 py-6 bg-white text-gray-800 shadow-lg relative">
-    {/* Left: Display either greeting or a logo/placeholder */}
-    <div className="text-xl font-semibold text-gray-700">
-      {isAuthenticated ? (
-        <span>
-          Welcome back, <span className="text-blue-600">{username}</span>!
+      {/* Left */}
+      <div className="text-xl font-semibold text-gray-700">
+        <span className="text-gray-500">
+         <p className="flex justify-center items-center gap-4"> <SignedIn><UserButton afterSignOutUrl="/" /> {user?.username}! </SignedIn></p>
+          <SignedOut>Let&lsquo;s Get Started!</SignedOut>
         </span>
-      ) : (
-        <span className="text-gray-500">Let&lsquo;s Get Started!</span> // Add a logo or placeholder text here
-      )}
-    </div>
-  
-    {/* Centered Title with Book Icon */}
-    <h1 className="absolute left-1/2 transform -translate-x-1/2 text-3xl sm:text-4xl font-extrabold text-center tracking-wider flex items-center space-x-2 text-blue-600">
-      {/* <FaBook className="text-blue-600 text-2xl" /> Book icon */}
-      <span>Smart Question Generator</span>
-    </h1>
-  
-    {/* Navbar Buttons */}
-    <div className="ml-auto flex items-center space-x-6">
-      {/* Mobile Menu Button */}
-      <button onClick={() => setMenuOpen(!menuOpen)} className="sm:hidden text-gray-800 text-3xl">
-        <FiMenu />
-      </button>
-  
-      <nav
-        className={`sm:flex sm:items-center sm:space-x-6 absolute sm:static top-16 right-6 bg-white sm:bg-transparent shadow-lg sm:shadow-none p-6 sm:p-0 rounded-lg transition-all ${
-          menuOpen ? "block" : "hidden"
-        }`}
-      >
+      </div>
+
+      {/* Centered Title */}
+      <h1 className="absolute left-1/2 transform -translate-x-1/2 text-3xl sm:text-4xl font-extrabold text-center tracking-wider flex items-center space-x-2 text-blue-600">
+        <span>Smart Question Generator</span>
+      </h1>
+
+      {/* Right Nav */}
+      <div className="ml-auto flex items-center space-x-6">
         <button
-          className="px-6 py-3 bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 transition"
-          onClick={() => navigate("/")}
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="sm:hidden text-gray-800 text-3xl"
         >
-          Home
+          <FiMenu />
         </button>
-  
-        {isAuthenticated ? (
+
+        <nav
+          className={`sm:flex sm:items-center sm:space-x-6 absolute sm:static top-16 right-6 bg-white sm:bg-transparent shadow-lg sm:shadow-none p-6 sm:p-0 rounded-lg transition-all ${
+            menuOpen ? "block" : "hidden"
+          }`}
+        >
           <button
-            className="px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 transition"
-            onClick={handleLogout}
-            disabled={loading}
+            className="px-6 py-3 bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 transition"
+            onClick={() => navigate("/")}
           >
-            {loading ? "Logging Out..." : "Logout"}
+            Home
           </button>
-        ) : (
-          <>
+
+          <SignedOut>
+            <SignInButton mode="modal">
+              <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">
+                Login
+              </button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <button className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition">
+                Sign Up
+              </button>
+            </SignUpButton>
+          </SignedOut>
+
+          <SignedIn>
             <button
-              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition"
-              onClick={() => navigate("/login")}
+              className="px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 transition"
+              onClick={() => signOut()}
             >
-              Login
+              Logout
             </button>
-            <button
-              className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition"
-              onClick={() => navigate("/signup")}
-            >
-              Sign Up
-            </button>
-          </>
-        )}
-      </nav>
-    </div>
-  </header>
-  
+          </SignedIn>
+          <button
+    onClick={() => setDarkMode(!darkMode)}
+    className="p-2 bg-gray-700 dark:bg-gray-200 text-white dark:text-gray-800 rounded-full shadow-md"
+    title="Toggle Theme"
+  >
+    {darkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
+  </button>
+        </nav>
+      </div>
+    </header>
   );
 };
 
