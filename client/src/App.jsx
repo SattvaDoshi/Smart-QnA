@@ -7,7 +7,8 @@ import {
   SignUp,
 } from "@clerk/clerk-react";
 
-import MainPage from "./pages/MainPage";
+import MainPage from "./pages/MainPage"; 
+import MainPageLatest from "./pages/MainPage2"; 
 import Header from "./Components/Header";
 import DashBoard from "./pages/DashBoard";
 import LandingPage from "./pages/LandingPage";
@@ -41,7 +42,7 @@ function App() {
           path="/dashboard/main"
           element={
             <ProtectedRoute>
-              <MainPage />
+              <MainPageLatest />
             </ProtectedRoute>
           }
         />
