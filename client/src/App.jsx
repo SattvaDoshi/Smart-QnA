@@ -12,6 +12,7 @@ import MainPageLatest from "./pages/MainPage2";
 import Header from "./Components/Header";
 import DashBoard from "./pages/DashBoard";
 import LandingPage from "./pages/LandingPage";
+import SavedQuestion from "./pages/SavedQuestions"
 
 function ProtectedRoute({ children }) {
   return (
@@ -35,6 +36,14 @@ function App() {
           element={
             <ProtectedRoute>
               <DashBoard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/savedquestions"
+          element={
+            <ProtectedRoute>
+              <SavedQuestion/>
             </ProtectedRoute>
           }
         />

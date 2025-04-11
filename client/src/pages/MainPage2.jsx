@@ -31,7 +31,33 @@ const dummyQuestions = [
   },
 ];
 
+import axios from "axios";
+import { useUser } from "@clerk/clerk-react";
+
+
+
+
+
 const MainForm = () => {
+  const { user } = useUser(); // Get the authenticated user's details
+
+
+  const saveQuestion = async (questionData) => {
+    if (!user) {
+      console.error("User not authenticated");
+      return;
+    }
+  
+    try {
+      const response = await axios.post("http://localhost:5000/api/questions/save", {
+        ...questionData,
+        userId: user.id, // Pass Clerk user ID here
+      });
+      console.log("Question saved successfully:", response.data);
+    } catch (error) {
+      console.error("Error saving question:", error);
+    }
+  };
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("theme") === "dark"
   );
@@ -204,7 +230,7 @@ const MainForm = () => {
                   <p><strong>Doc Answer:</strong> {q.docAnswer}</p>
                   <p><strong>Similarity Score:</strong> {q.similarityScore}</p>
                   <button
-                    onClick={() => handleSave(q)}
+                    onClick={() => {handleSave(q) ;saveQuestion(q)}}
                     className="mt-2 px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm"
                   >
                     Save Question

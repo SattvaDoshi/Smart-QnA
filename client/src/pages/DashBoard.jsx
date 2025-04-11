@@ -7,7 +7,7 @@ const dashboardFeatures = [
     title: "Stored Questions",
     desc: "Access and manage your previously generated questions.",
     icon: FaDatabase,
-    route: "/stored-questions",
+    route: "/savedquestions",
   },
   {
     title: "Generate New Questions",
